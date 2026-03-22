@@ -2,7 +2,9 @@
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#020306">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>TalabaGo — Ilmiy ishlar AI yordamida tez va sifatli</title>
     <meta name="description" content="Referat, kurs ishi va loyihalarni sun'iy intellekt orqali atigi 5 daqiqada tayyorlang. A'lo bahoga kafolat.">
     
@@ -78,6 +80,8 @@
             max-width: 1240px;
             margin: 0 auto;
             padding: 0 24px;
+            padding-left: max(24px, env(safe-area-inset-left));
+            padding-right: max(24px, env(safe-area-inset-right));
             position: relative;
             z-index: 10;
         }
@@ -908,29 +912,369 @@
             color: var(--brand-yellow);
         }
 
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .hero-layout { grid-template-columns: 1fr; text-align: center; }
-            .hero-content { display: flex; flex-direction: column; align-items: center; }
-            .hero-3d-scene { display: none; }
-            .hero h1 { font-size: 64px; }
-            .process-cards { grid-template-columns: repeat(2, 1fr); }
-            .comparison-wrapper { grid-template-columns: 1fr; }
+        /* ------------------ Mobile Menu ------------------ */
+        .mobile-menu-toggle {
+            display: none;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: var(--transition);
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .mobile-menu-toggle:hover, .mobile-menu-toggle:active {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--brand-blue);
+        }
+        
+        .mobile-menu-toggle i {
+            width: 22px;
+            height: 22px;
+            transition: var(--transition);
+        }
+        
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            height: 100dvh; /* Dynamic viewport height for mobile browsers */
+            background: rgba(2, 3, 6, 0.98);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 32px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .mobile-nav.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .mobile-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Outfit', sans-serif;
+            padding: 16px 32px;
+            transition: var(--transition);
+            position: relative;
+        }
+        
+        .mobile-nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 8px;
+            left: 50%;
+            transform: translateX(-50%) scaleX(0);
+            width: 40px;
+            height: 3px;
+            background: var(--brand-yellow);
+            border-radius: 2px;
+            transition: transform 0.3s ease;
+        }
+        
+        .mobile-nav a:hover::after,
+        .mobile-nav a:active::after {
+            transform: translateX(-50%) scaleX(1);
+        }
+        
+        .mobile-nav-close {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .mobile-nav-close:hover {
+            background: rgba(255, 77, 77, 0.2);
+            border-color: #ff4d4d;
+        }
+        
+        .mobile-nav-close i {
+            width: 24px;
+            height: 24px;
+        }
+        
+        .mobile-nav .btn {
+            margin-top: 24px;
+            font-size: 18px;
+            padding: 18px 48px;
         }
 
+        /* ------------------ Responsive Breakpoints ------------------ */
+        
+        /* Tablet Landscape */
+        @media (max-width: 1024px) {
+            .hero-layout { 
+                grid-template-columns: 1fr; 
+                text-align: center; 
+            }
+            .hero-content { 
+                display: flex; 
+                flex-direction: column; 
+                align-items: center; 
+            }
+            .hero-3d-scene { display: none; }
+            .hero h1 { font-size: 56px; }
+            .hero p { font-size: 18px; }
+            .process-cards { grid-template-columns: repeat(2, 1fr); }
+            .comparison-wrapper { grid-template-columns: 1fr; }
+            .comp-side { padding: 60px 48px; }
+            .comp-old { border-right: none; border-bottom: 1px solid var(--border); }
+            .section { padding: 100px 0; }
+            .section-title { font-size: 48px; }
+        }
+
+        /* Tablet Portrait / Large Mobile */
         @media (max-width: 768px) {
+            /* Mobile menu visibility */
             .nav-links { display: none; }
-            .hero { padding: 180px 0 100px; }
-            .hero h1 { font-size: 48px; }
-            .hero-buttons { flex-direction: column; width: 100%; }
-            .btn { width: 100%; }
-            .section-title { font-size: 40px; }
-            .process-cards { grid-template-columns: 1fr; }
-            .extreme-cta h2 { font-size: 40px; }
-            .extreme-cta { padding: 80px 20px; }
-            .footer-inner { flex-direction: column; gap: 32px; text-align: center; }
-            .cursor, .cursor-follower { display: none; } /* Disable custom cursor on mobile */
+            .mobile-menu-toggle { display: flex; }
+            .mobile-nav { display: flex; }
+            
+            /* Disable custom cursor */
+            .cursor, .cursor-follower { display: none; }
             * { cursor: auto !important; }
+            
+            /* Container */
+            .container { padding: 0 20px; }
+            
+            /* Header */
+            header { padding: 16px 0; }
+            header.scrolled { padding: 12px 0; }
+            .logo img { width: 40px; height: 40px; }
+            .logo span { font-size: 22px; }
+            
+            /* Hero */
+            .hero { 
+                padding: 140px 0 80px; 
+                min-height: auto;
+            }
+            .hero h1 { 
+                font-size: 40px; 
+                margin-bottom: 24px;
+            }
+            .hero p { 
+                font-size: 16px; 
+                margin-bottom: 32px;
+            }
+            .badge { 
+                font-size: 12px; 
+                padding: 6px 12px;
+                margin-bottom: 24px;
+            }
+            .hero-buttons { 
+                flex-direction: column; 
+                width: 100%; 
+                gap: 12px;
+            }
+            .btn { 
+                width: 100%; 
+                padding: 16px 24px;
+                font-size: 15px;
+                min-height: 52px; /* Touch target */
+            }
+            
+            /* Sections */
+            .section { padding: 80px 0; }
+            .section-header { margin-bottom: 48px; }
+            .section-title { font-size: 32px; }
+            .section-desc { font-size: 16px; }
+            .section-label { font-size: 12px; }
+            
+            /* Comparison */
+            .comp-side { padding: 40px 24px; }
+            .comp-icon { 
+                width: 64px; 
+                height: 64px; 
+                margin-bottom: 24px;
+            }
+            .comp-icon i { width: 32px; height: 32px; }
+            .comp-side h3 { font-size: 24px; }
+            .comp-side li { 
+                font-size: 15px; 
+                padding: 14px 0;
+                gap: 12px;
+            }
+            
+            /* Process Cards */
+            .process-cards { 
+                grid-template-columns: 1fr; 
+                gap: 16px;
+            }
+            .p-card { padding: 32px 24px; }
+            .p-num { font-size: 48px; }
+            .p-card h3 { font-size: 20px; }
+            .p-card p { font-size: 14px; }
+            
+            /* Telegram Mockup */
+            .tg-mockup { 
+                max-width: 100%; 
+                border-radius: 16px;
+            }
+            .tg-header { padding: 12px 16px; }
+            .tg-avatar { width: 40px; height: 40px; }
+            .tg-texts strong { font-size: 14px; }
+            .tg-texts span { font-size: 12px; }
+            .tg-body { padding: 16px; gap: 16px; }
+            .tg-msg { 
+                padding: 12px 14px; 
+                font-size: 13px;
+                max-width: 90%;
+            }
+            .doc-attachment { padding: 12px; gap: 12px; }
+            .doc-icon { width: 40px; height: 40px; }
+            .doc-icon i { width: 20px; height: 20px; }
+            .doc-info strong { font-size: 13px; }
+            .doc-details { padding: 12px; gap: 8px; }
+            .detail-row { font-size: 12px; }
+            
+            /* CTA */
+            .extreme-cta { 
+                padding: 64px 20px; 
+                border-radius: 24px;
+            }
+            .extreme-cta h2 { 
+                font-size: 28px;
+                line-height: 1.2;
+            }
+            .extreme-cta p { font-size: 16px !important; }
+            .huge-btn { 
+                font-size: 18px; 
+                padding: 18px 40px;
+                margin-top: 32px;
+            }
+            
+            /* Footer */
+            footer { padding: 48px 0; margin-top: 60px; }
+            .footer-inner { 
+                flex-direction: column; 
+                gap: 24px; 
+                text-align: center; 
+            }
+            .footer-links { 
+                flex-wrap: wrap; 
+                justify-content: center; 
+                gap: 24px; 
+            }
+            .footer-links a { 
+                font-size: 14px;
+                padding: 8px 12px;
+            }
+            
+            /* Glow effects reduced for performance */
+            .glow-sphere { 
+                filter: blur(100px); 
+                opacity: 0.1; 
+            }
+            .glow-1 { width: 400px; height: 400px; }
+            .glow-2 { width: 350px; height: 350px; }
+        }
+
+        /* Small Mobile */
+        @media (max-width: 480px) {
+            .container { padding: 0 16px; }
+            
+            .hero { padding: 120px 0 60px; }
+            .hero h1 { font-size: 32px; }
+            .hero p { font-size: 15px; }
+            .badge { 
+                font-size: 11px;
+                gap: 6px;
+            }
+            .badge i { width: 14px; height: 14px; }
+            
+            .section { padding: 60px 0; }
+            .section-header { margin-bottom: 36px; }
+            .section-title { font-size: 26px; }
+            .section-desc { font-size: 14px; }
+            
+            .comp-side { padding: 32px 20px; }
+            .comp-side h3 { font-size: 20px; margin-bottom: 16px; }
+            .comp-side li { font-size: 14px; }
+            
+            .p-card { padding: 24px 20px; }
+            .p-num { font-size: 40px; }
+            .p-card h3 { font-size: 18px; }
+            
+            .extreme-cta { padding: 48px 16px; }
+            .extreme-cta h2 { font-size: 24px; }
+            .extreme-cta h2 br { display: none; }
+            .huge-btn { 
+                font-size: 16px; 
+                padding: 16px 32px;
+                width: 100%;
+            }
+            
+            .mobile-nav a { font-size: 24px; }
+            
+            /* Telegram mockup compact */
+            .tg-body { padding: 12px; }
+            .tg-msg { font-size: 12px; }
+            .doc-attachment { 
+                flex-direction: column; 
+                text-align: center;
+                gap: 8px;
+            }
+            .dl-btn { display: none; }
+        }
+        
+        /* Extra Small Mobile */
+        @media (max-width: 360px) {
+            .hero h1 { font-size: 28px; }
+            .section-title { font-size: 24px; }
+            .logo span { font-size: 20px; }
+            .extreme-cta h2 { font-size: 22px; }
+        }
+        
+        /* Landscape Mobile */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .hero { 
+                padding: 100px 0 60px; 
+                min-height: auto;
+            }
+            .mobile-nav { 
+                flex-direction: row; 
+                flex-wrap: wrap;
+                gap: 16px;
+                padding: 60px;
+            }
+            .mobile-nav a { font-size: 18px; padding: 12px 20px; }
+        }
+        
+        /* Reduced Motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         /* ------------------ Telegram Mockup ------------------ */
@@ -1093,6 +1437,34 @@
         
         body.light-theme .doc-footer, body.light-theme .tg-time { border-top-color: rgba(0,0,0,0.05); color: var(--text-secondary); }
         body.light-theme .cursor-follower { border-color: var(--brand-blue); }
+        
+        /* Light theme mobile nav */
+        body.light-theme .mobile-nav {
+            background: rgba(248, 250, 252, 0.98);
+        }
+        body.light-theme .mobile-nav a {
+            color: var(--text-primary);
+        }
+        body.light-theme .mobile-nav-close {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+            color: var(--text-primary);
+        }
+        body.light-theme .mobile-menu-toggle {
+            background: rgba(0, 0, 0, 0.03);
+            border-color: rgba(0, 0, 0, 0.08);
+        }
+        
+        /* Desktop only elements */
+        .desktop-only {
+            display: inline-flex;
+        }
+        
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1104,6 +1476,19 @@
     <!-- Ambient Glow BG -->
     <div class="glow-sphere glow-1"></div>
     <div class="glow-sphere glow-2"></div>
+    
+    <!-- Mobile Navigation Overlay -->
+    <nav class="mobile-nav" id="mobileNav">
+        <button class="mobile-nav-close" id="mobileNavClose" aria-label="Menyu yopish">
+            <i data-lucide="x"></i>
+        </button>
+        <a href="#muammo" class="mobile-nav-link">Muammo va Yechim</a>
+        <a href="#jarayon" class="mobile-nav-link">Jarayon</a>
+        <a href="#foyda" class="mobile-nav-link">Natija</a>
+        <a href="https://t.me/TalabaGoRobot" class="btn btn-primary interactable">
+            Botga O'tish <i data-lucide="arrow-right"></i>
+        </a>
+    </nav>
     
     <!-- Moving Particles Canvas -->
     <canvas id="particles" class="ambient-canvas"></canvas>
@@ -1124,9 +1509,12 @@
                     <button class="btn btn-outline interactable" id="themeToggle" style="padding: 10px 14px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; width: 44px; height: 44px;">
                         <i data-lucide="sun" id="themeIcon" style="width: 20px; height: 20px;"></i>
                     </button>
-                    <a href="https://t.me/TalabaGoRobot" class="btn btn-outline interactable" style="padding: 12px 24px; font-size: 14px;">
+                    <a href="https://t.me/TalabaGoRobot" class="btn btn-outline interactable desktop-only" style="padding: 12px 24px; font-size: 14px;">
                         Botga kirish
                     </a>
+                    <button class="mobile-menu-toggle interactable" id="mobileMenuToggle" aria-label="Menyu ochish">
+                        <i data-lucide="menu"></i>
+                    </button>
                 </div>
             </div>
         </div>
@@ -1403,6 +1791,52 @@
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
+            }
+        });
+
+        // 2.5. Mobile Menu Logic
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const mobileNav = document.getElementById('mobileNav');
+        const mobileNavClose = document.getElementById('mobileNavClose');
+        const mobileNavLinks = document.querySelectorAll('.mobile-nav-link');
+
+        function openMobileMenu() {
+            mobileNav.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            if(typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeMobileMenu() {
+            mobileNav.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        if(mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', openMobileMenu);
+        }
+
+        if(mobileNavClose) {
+            mobileNavClose.addEventListener('click', closeMobileMenu);
+        }
+
+        // Close menu when clicking nav links
+        mobileNavLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                closeMobileMenu();
+            });
+        });
+
+        // Close menu on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && mobileNav.classList.contains('active')) {
+                closeMobileMenu();
+            }
+        });
+
+        // Close menu when clicking outside
+        mobileNav.addEventListener('click', (e) => {
+            if (e.target === mobileNav) {
+                closeMobileMenu();
             }
         });
 
