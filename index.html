@@ -1026,6 +1026,37 @@
             font-size: 18px;
             padding: 18px 48px;
         }
+        
+        .mobile-theme-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 32px;
+            padding: 14px 28px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .mobile-theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+        }
+        
+        .mobile-theme-toggle i {
+            width: 20px;
+            height: 20px;
+            color: var(--brand-yellow);
+        }
+        
+        body.light-theme .mobile-theme-toggle {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
 
         /* ------------------ Responsive Breakpoints ------------------ */
         
@@ -1461,8 +1492,19 @@
             display: inline-flex;
         }
         
+        /* Theme toggle button - cleaner on mobile */
+        #themeToggle {
+            background: transparent;
+            border: 1px solid var(--border);
+        }
+        
         @media (max-width: 768px) {
             .desktop-only {
+                display: none !important;
+            }
+            
+            /* Hide theme toggle on mobile for cleaner header */
+            #themeToggle {
                 display: none !important;
             }
         }
@@ -1489,6 +1531,10 @@
         <a href="https://t.me/TalabaGoRobot" class="btn btn-primary interactable">
             Botga O'tish <i data-lucide="arrow-right"></i>
         </a>
+        <button class="mobile-theme-toggle" id="mobileThemeToggle">
+            <i data-lucide="sun" id="mobileThemeIcon"></i>
+            <span>Rejim o'zgartirish</span>
+        </button>
     </nav>
     
     <!-- Moving Particles Canvas -->
@@ -1731,23 +1777,35 @@
         // Theme Toggle Logic
         const themeToggle = document.getElementById('themeToggle');
         const themeIcon = document.getElementById('themeIcon');
+        const mobileThemeToggle = document.getElementById('mobileThemeToggle');
+        const mobileThemeIcon = document.getElementById('mobileThemeIcon');
+
+        function updateThemeIcons(isLight) {
+            const iconName = isLight ? 'moon' : 'sun';
+            if(themeIcon) themeIcon.setAttribute('data-lucide', iconName);
+            if(mobileThemeIcon) mobileThemeIcon.setAttribute('data-lucide', iconName);
+            if(typeof lucide !== 'undefined') lucide.createIcons();
+        }
 
         const savedTheme = localStorage.getItem('theme') || 'dark';
         if (savedTheme === 'light') {
             document.body.classList.add('light-theme');
-            themeIcon.setAttribute('data-lucide', 'moon');
-            if(typeof lucide !== 'undefined') lucide.createIcons();
+            updateThemeIcons(true);
+        }
+
+        function toggleTheme() {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+            updateThemeIcons(isLight);
         }
 
         if(themeToggle) {
-            themeToggle.addEventListener('click', () => {
-                document.body.classList.toggle('light-theme');
-                const isLight = document.body.classList.contains('light-theme');
-                localStorage.setItem('theme', isLight ? 'light' : 'dark');
-                
-                themeIcon.setAttribute('data-lucide', isLight ? 'moon' : 'sun');
-                if(typeof lucide !== 'undefined') lucide.createIcons();
-            });
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+        
+        if(mobileThemeToggle) {
+            mobileThemeToggle.addEventListener('click', toggleTheme);
         }
 
         // 1. Custom Cursor Logic
